@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // Event & Panchang Schedule Data
@@ -92,7 +92,7 @@ const fullPanchang: EventItem[] = [
   },
 ];
 
-// Helper to generate Google Calendar Link
+// Google Calendar URL Generator
 function getGoogleCalendarUrl(title: string, details: string, location: string, start: string, end: string) {
   const baseUrl = 'https://calendar.google.com/calendar/render';
   const params = new URLSearchParams({
@@ -105,7 +105,7 @@ function getGoogleCalendarUrl(title: string, details: string, location: string, 
   return `${baseUrl}?${params.toString()}`;
 }
 
-// Lotus Petal SVG Motif
+// Lotus Petal Icon Component
 function LotusPetalIcon() {
   return (
     <svg viewBox="0 0 100 65" className="lotus-flower-svg" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -122,217 +122,54 @@ function LotusPetalIcon() {
 export default function Home() {
   const [entered, setEntered] = useState(false);
   const [music, setMusic] = useState(false);
-  const [soundMode, setSoundMode] = useState<'tanpura' | 'dhak' | 'shankh'>('tanpura');
   const [pushpanjaliCount, setPushpanjaliCount] = useState(108);
   const [showBlessing, setShowBlessing] = useState(false);
   const [activeTab, setActiveTab] = useState<number>(0);
-
-  // Personalized Greeting State
   const [guestName, setGuestName] = useState('');
   const [customMsgCopied, setCustomMsgCopied] = useState(false);
 
-  // Audio Context Ref
-  const audioCtxRef = useRef<AudioContext | null>(null);
-  const oscillatorsRef = useRef<OscillatorNode[]>([]);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  // Audio Ref using the audio file in public/
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // Web Audio Synth Generator (Tanpura, Bengali Dhak, Shankha Naad)
-  const startAudio = () => {
-    try {
-      if (!audioCtxRef.current) {
-        const AudioContextClass = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
-        audioCtxRef.current = new AudioContextClass();
-      }
-
-      if (audioCtxRef.current.state === 'suspended') {
-        audioCtxRef.current.resume();
-      }
-
-      stopAudio();
-
-      const ctx = audioCtxRef.current;
-      const now = ctx.currentTime;
-
-      if (soundMode === 'tanpura') {
-        // Tanpura Drone Frequencies (C#3, G#3, C#4, G#4)
-        const freqs = [138.59, 207.65, 277.18, 415.3];
-        freqs.forEach((freq, idx) => {
-          const osc = ctx.createOscillator();
-          const gain = ctx.createGain();
-
-          osc.type = idx % 2 === 0 ? 'sine' : 'triangle';
-          osc.frequency.setValueAtTime(freq, now);
-
-          const lfo = ctx.createOscillator();
-          const lfoGain = ctx.createGain();
-          lfo.frequency.value = 0.16 + idx * 0.08;
-          lfoGain.gain.value = 1.6;
-          lfo.connect(osc.frequency);
-          lfo.start();
-
-          const baseGain = idx === 0 ? 0.08 : 0.035 / (idx + 1);
-          gain.gain.setValueAtTime(0.001, now);
-          gain.gain.exponentialRampToValueAtTime(baseGain, now + 3);
-
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-          osc.start();
-
-          oscillatorsRef.current.push(osc, lfo);
-        });
-
-        // Periodic Temple Bell Gong
-        intervalRef.current = setInterval(() => {
-          if (!audioCtxRef.current || audioCtxRef.current.state !== 'running') return;
-          const bCtx = audioCtxRef.current;
-          const bTime = bCtx.currentTime;
-          const bellOsc = bCtx.createOscillator();
-          const bellGain = bCtx.createGain();
-          bellOsc.type = 'sine';
-          bellOsc.frequency.setValueAtTime(1480, bTime);
-          bellGain.gain.setValueAtTime(0.08, bTime);
-          bellGain.gain.exponentialRampToValueAtTime(0.0001, bTime + 2.5);
-          bellOsc.connect(bellGain);
-          bellGain.connect(bCtx.destination);
-          bellOsc.start();
-          bellOsc.stop(bTime + 2.5);
-        }, 6000);
-      } else if (soundMode === 'dhak') {
-        // Bengali Dhak Drum Rhythm Synthesizer
-        let beat = 0;
-        intervalRef.current = setInterval(() => {
-          if (!audioCtxRef.current || audioCtxRef.current.state !== 'running') return;
-          const dCtx = audioCtxRef.current;
-          const dTime = dCtx.currentTime;
-
-          // Dhak Bass Drum
-          const drumOsc = dCtx.createOscillator();
-          const drumGain = dCtx.createGain();
-          drumOsc.type = 'sine';
-          const isAccent = beat % 4 === 0;
-          drumOsc.frequency.setValueAtTime(isAccent ? 140 : 180, dTime);
-          drumOsc.frequency.exponentialRampToValueAtTime(50, dTime + 0.15);
-
-          drumGain.gain.setValueAtTime(isAccent ? 0.25 : 0.12, dTime);
-          drumGain.gain.exponentialRampToValueAtTime(0.001, dTime + 0.2);
-
-          drumOsc.connect(drumGain);
-          drumGain.connect(dCtx.destination);
-          drumOsc.start();
-          drumOsc.stop(dTime + 0.2);
-
-          // Kansor (Metallic Plate Chime)
-          if (beat % 2 === 1) {
-            const kOsc = dCtx.createOscillator();
-            const kGain = dCtx.createGain();
-            kOsc.type = 'triangle';
-            kOsc.frequency.setValueAtTime(2400, dTime);
-            kGain.gain.setValueAtTime(0.05, dTime);
-            kGain.gain.exponentialRampToValueAtTime(0.001, dTime + 0.4);
-            kOsc.connect(kGain);
-            kGain.connect(dCtx.destination);
-            kOsc.start();
-            kOsc.stop(dTime + 0.4);
-          }
-
-          beat = (beat + 1) % 8;
-        }, 320);
-      } else if (soundMode === 'shankh') {
-        // Resonant Shankha (Conch Shell Drone)
-        const osc1 = ctx.createOscillator();
-        const osc2 = ctx.createOscillator();
-        const gain = ctx.createGain();
-
-        osc1.type = 'sawtooth';
-        osc2.type = 'sine';
-
-        osc1.frequency.setValueAtTime(220, now);
-        osc2.frequency.setValueAtTime(440, now);
-
-        osc1.frequency.linearRampToValueAtTime(245, now + 2);
-        osc1.frequency.linearRampToValueAtTime(220, now + 4);
-
-        gain.gain.setValueAtTime(0.001, now);
-        gain.gain.exponentialRampToValueAtTime(0.12, now + 1.5);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 4.5);
-
-        osc1.connect(gain);
-        osc2.connect(gain);
-        gain.connect(ctx.destination);
-
-        osc1.start();
-        osc2.start();
-        oscillatorsRef.current.push(osc1, osc2);
-      }
-    } catch {
-      // Audio fallback gracefully
-    }
-  };
-
-  const stopAudio = () => {
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
-    }
-    oscillatorsRef.current.forEach(node => {
-      try {
-        node.stop();
-        node.disconnect();
-      } catch {
-        // Safe catch
-      }
-    });
-    oscillatorsRef.current = [];
-  };
-
-  // Play Flower Offering Chime
-  const playChime = () => {
-    try {
-      if (!audioCtxRef.current) return;
-      const ctx = audioCtxRef.current;
-      const now = ctx.currentTime;
-
-      [1046.5, 1318.5, 1567.98, 2093].forEach((f, i) => {
-        const osc = ctx.createOscillator();
-        const g = ctx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(f, now + i * 0.08);
-        g.gain.setValueAtTime(0.06, now + i * 0.08);
-        g.gain.exponentialRampToValueAtTime(0.0001, now + i * 0.08 + 1.2);
-        osc.connect(g);
-        g.connect(ctx.destination);
-        osc.start(now + i * 0.08);
-        osc.stop(now + i * 0.08 + 1.2);
-      });
-    } catch {
-      // Safe catch
-    }
-  };
-
-  useEffect(() => {
-    if (music) {
-      startAudio();
-    } else {
-      stopAudio();
-    }
-    return () => stopAudio();
-  }, [music, soundMode]);
-
-  useEffect(() => {
-    document.body.classList.toggle('locked', !entered);
-    return () => document.body.classList.remove('locked');
-  }, [entered]);
-
+  // Enter Invitation Gate and start audio from 3 seconds
   const handleEnter = () => {
     setEntered(true);
     setMusic(true);
+    if (audioRef.current) {
+      const el = audioRef.current;
+      try {
+        el.currentTime = 3;
+      } catch {}
+      el.play().then(() => {
+        if (el.currentTime < 2.5) {
+          el.currentTime = 3;
+        }
+      }).catch((err) => {
+        console.warn('Autoplay error:', err);
+      });
+    }
   };
 
-  // Pushpanjali Action
+  // Toggle Music Play / Pause
+  const toggleMusic = () => {
+    if (!audioRef.current) return;
+    const el = audioRef.current;
+    if (music) {
+      el.pause();
+      setMusic(false);
+    } else {
+      if (el.currentTime < 3) {
+        el.currentTime = 3;
+      }
+      el.play().catch(() => {});
+      setMusic(true);
+    }
+  };
+
+  // Pushpanjali Floral Offering Action
   const handlePushpanjali = () => {
     setPushpanjaliCount(prev => prev + 1);
     setShowBlessing(true);
-    playChime();
     setTimeout(() => setShowBlessing(false), 4500);
   };
 
@@ -350,6 +187,15 @@ export default function Home() {
 
   return (
     <main>
+      {/* Background Audio Element from public folder (starts from 3s) */}
+      <audio
+        ref={audioRef}
+        src="/music.mp3"
+        preload="auto"
+        loop
+        playsInline
+      />
+
       {/* Falling Lotus, Hibiscus & Marigold Flower Petals */}
       <div className="petals-container">
         {Array.from({ length: 18 }).map((_, i) => {
@@ -391,8 +237,8 @@ export default function Home() {
       </AnimatePresence>
 
       {/* =========================================================
-          LANDING GATE: Featuring the exact uploaded poster artwork
-          with our custom coded interactive button placed seamlessly
+          LANDING GATE: Featuring the exact poster artwork with
+          custom coded interactive button positioned seamlessly
           ========================================================= */}
       <AnimatePresence>
         {!entered && (
@@ -717,7 +563,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Floating Audio Controls Pill */}
+      {/* Clean Floating Audio Controls Pill */}
       {entered && (
         <div className="music-pill">
           {music && (
@@ -728,18 +574,10 @@ export default function Home() {
             </div>
           )}
 
-          <select
-            value={soundMode}
-            onChange={(e) => setSoundMode(e.target.value as 'tanpura' | 'dhak' | 'shankh')}
-            aria-label="Select devotional audio mode"
-          >
-            <option value="tanpura">🎶 Tanpura &amp; Bell</option>
-            <option value="dhak">🥁 Bengali Dhak Rhythm</option>
-            <option value="shankh">🐚 Shankha Conch Sound</option>
-          </select>
+          <span>{music ? '♫ Ambient Audio' : '🔇 Muted'}</span>
 
-          <button onClick={() => setMusic(!music)} aria-label="Toggle background audio">
-            {music ? 'Pause' : 'Play Sound'}
+          <button onClick={toggleMusic} aria-label="Toggle background audio">
+            {music ? 'Pause' : 'Play'}
           </button>
         </div>
       )}
