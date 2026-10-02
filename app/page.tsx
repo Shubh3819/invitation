@@ -48,34 +48,7 @@ const fullPanchang: EventItem[] = [
     calendarStart: '20261018T140000Z',
     calendarEnd: '20261018T173000Z',
   },
-  {
-    eyebrow: 'MAHAASHTAMI & SANDHI PUJA',
-    dayName: 'Monday, Oct 19',
-    title: 'Kumari Puja & Dhunuchi Aarti',
-    date: 'Monday, 19.10.2026 · Anjali at 9:30 am',
-    venue: 'at Colvin Court Mandap',
-    extra: 'Sandhi Puja Mahurat at Evening · Dhunuchi Dance Competition',
-    icon: '🪷',
-    details: 'The pinnacle of devotion with Kumari Puja, Mahaashtami Pushpanjali, and Sandhi Puja illuminated by 108 glowing pradips and 108 fresh lotuses.',
-    calendarTitle: 'Mahaashtami & Sandhi Puja - Colvin Court Durga Puja',
-    calendarDetails: 'Mahaashtami Pushpanjali, Kumari Puja, Dhunuchi Naach, and auspicious Sandhi Puja.',
-    calendarStart: '20261019T040000Z',
-    calendarEnd: '20261019T143000Z',
-  },
-  {
-    eyebrow: 'MAHANAVAMI',
-    dayName: 'Tuesday, Oct 20',
-    title: 'Navami Homa & Bhog Prasad',
-    date: 'Tuesday, 20.10.2026 · Homa at 11:00 am',
-    venue: 'at Colvin Court Mandap',
-    extra: 'Grand Bhog Prasad Distribution for all devotees',
-    icon: '🔱',
-    details: 'Mahanavami Yajna & Homa in reverence to Mahishasura Mardini, followed by sacred Khichuri Bhog Prasad distribution.',
-    calendarTitle: 'Mahanavami Homa & Bhog Prasad - Colvin Court Durga Puja',
-    calendarDetails: 'Mahanavami Homa and Bhog Prasad distribution at Colvin Court.',
-    calendarStart: '20261020T053000Z',
-    calendarEnd: '20261020T083000Z',
-  },
+
   {
     eyebrow: 'DASHMI & SINDUR KHELA',
     dayName: 'Wednesday, Oct 21',
@@ -125,13 +98,11 @@ export default function Home() {
   const [pushpanjaliCount, setPushpanjaliCount] = useState(108);
   const [showBlessing, setShowBlessing] = useState(false);
   const [activeTab, setActiveTab] = useState<number>(0);
-  const [guestName, setGuestName] = useState('');
-  const [customMsgCopied, setCustomMsgCopied] = useState(false);
 
   // Audio Ref using the audio file in public/
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // Enter Invitation Gate and play new audio from start
+  // Enter Gate and play audio from start
   const handleEnter = () => {
     setEntered(true);
     setMusic(true);
@@ -162,18 +133,6 @@ export default function Home() {
     setPushpanjaliCount(prev => prev + 1);
     setShowBlessing(true);
     setTimeout(() => setShowBlessing(false), 4500);
-  };
-
-  // Personalized Share text generator
-  const getShareText = () => {
-    const nameStr = guestName.trim() ? `Personalized Invitation for ${guestName}` : 'Durga Puja Invitation';
-    return `🪔 *Colvin Court Sarbojanin Durga Puja 2026* 🪔\n${nameStr}\n\nJoin us in celebrating Sharadotsav & the homecoming of Maa Durga at Railway Officers’ Club, Howrah.\n\n📅 Date: Oct 15 - Oct 21, 2026\n📍 Location: Railway Officers’ Club, Howrah\n\nMay Maa Durga bless you and your family with boundless joy, peace, & health! Shubh Sharadiya! (शुभ शारदीय!)`;
-  };
-
-  const handleCopyGreeting = () => {
-    navigator.clipboard.writeText(getShareText());
-    setCustomMsgCopied(true);
-    setTimeout(() => setCustomMsgCopied(false), 3000);
   };
 
   return (
@@ -297,13 +256,14 @@ export default function Home() {
       </section>
 
       {/* Sacred Mantra Section */}
-      <section className="section-wrapper">
+      <section className="section-wrapper" style={{ paddingTop: 30, paddingBottom: 12 }}>
         <motion.div
           className="arch-card"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
+          style={{ marginTop: 8, marginBottom: 8 }}
         >
           <p className="kicker-label">DEVI MAHATMYS &amp; AGAMANI</p>
           <div className="shloka-main">
@@ -327,7 +287,7 @@ export default function Home() {
       </section>
 
       {/* Virtual Pushpanjali Offering Ritual */}
-      <section className="section-wrapper" style={{ paddingTop: 20, paddingBottom: 50 }}>
+      <section className="section-wrapper" style={{ paddingTop: 10, paddingBottom: 35 }}>
         <div className="pushpanjali-card">
           <p className="kicker-label">VIRTUAL DEVOTIONAL RITUAL</p>
           <h2 style={{ fontFamily: 'Noto Serif Devanagari', color: 'var(--maroon)', fontSize: 32, margin: '10px 0 6px' }}>
@@ -444,7 +404,7 @@ export default function Home() {
               {fullPanchang[activeTab].details}
             </p>
 
-            {activeTab === 4 && (
+            {fullPanchang[activeTab]?.dayName.includes('Oct 21') && (
               <div className="dress-box">
                 <span className="dress-title">✨ DRESS CODE</span>
                 <p style={{ margin: '6px 0 0', fontWeight: 600, fontSize: 15 }}>
@@ -485,51 +445,6 @@ export default function Home() {
               <span className="dress-role">GENTS:</span>
               <span className="dress-spec">Kurta Pyjama</span>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Personalized Invitation & Shubho Sharadiya Greetings */}
-      <section className="section-wrapper">
-        <div className="greeting-card-generator">
-          <p className="kicker-label">हार्दिक शुभकामनाएं</p>
-          <h2 style={{ fontFamily: 'Noto Serif Devanagari', fontSize: 'clamp(24px, 5vw, 32px)', color: 'var(--maroon)', margin: '8px 0' }}>
-            शारदीय शुभकामनाएं साझा करें
-          </h2>
-          <p style={{ fontFamily: 'Noto Serif Devanagari', fontSize: 14, color: 'var(--maroon-rich)' }}>
-            अपने परिवार के नाम से इस पावन आमंत्रण को परिजनों और मित्रों के साथ साझा करें!
-          </p>
-
-          <input
-            type="text"
-            className="greeting-input"
-            placeholder="e.g. Mukherjee Family / Rohan & Sreya"
-            value={guestName}
-            onChange={(e) => setGuestName(e.target.value)}
-          />
-
-          <div style={{ background: '#fff8f2', border: '1px dashed var(--gold-warm)', padding: 16, borderRadius: 12, marginBottom: 20, textAlign: 'left' }}>
-            <p style={{ fontSize: 13, color: 'var(--maroon)', fontWeight: 700, marginBottom: 4 }}>
-              Preview Invitation Message:
-            </p>
-            <p style={{ fontSize: 13, color: '#3f1a23', whiteSpace: 'pre-line', lineHeight: 1.45 }}>
-              {getShareText()}
-            </p>
-          </div>
-
-          <div className="action-group">
-            <a
-              href={`https://wa.me/?text=${encodeURIComponent(getShareText())}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="action-btn primary"
-              style={{ background: '#25D366', borderColor: '#25D366' }}
-            >
-              💬 Share on WhatsApp
-            </a>
-            <button className="action-btn" onClick={handleCopyGreeting}>
-              {customMsgCopied ? '✓ Copied to Clipboard!' : '📋 Copy Invitation'}
-            </button>
           </div>
         </div>
       </section>
