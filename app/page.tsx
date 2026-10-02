@@ -21,30 +21,30 @@ interface EventItem {
 
 const fullPanchang: EventItem[] = [
   {
-    eyebrow: 'MAHASHASHTHI & INAUGURATION',
+    eyebrow: 'INAUGURATION (PANCHAMI)',
     dayName: 'Thursday, Oct 15',
-    title: 'Bodhon & Grand Inauguration',
-    date: 'Thursday, 15.10.2026 at 4:45 pm',
+    title: 'Grand Inauguration & Cultural Programme',
+    date: 'Thursday, 15.10.2026 at 04:45 pm',
     venue: 'at Colvin Court, Railway Officers’ Club, Howrah',
-    extra: 'Inauguration by Ms Gitika Pandey (President / ERWWO) followed by Cultural Programme & High Tea.',
+    extra: 'Inaugurated by Ms Gitika Pandey (General Manager, Eastern Railway) followed by Cultural Programme & High Tea at Colvin Court.',
     icon: '🪔',
-    details: 'Devi Bodhon, Adhibas & Kalparambha to warmly welcome the Divine Mother to our midst.',
-    calendarTitle: 'Inauguration & Shashthi - Colvin Court Durga Puja 2026',
-    calendarDetails: 'Bodhon & Grand Inauguration by Ms Gitika Pandey (President/ERWWO), followed by Cultural Programme & High Tea.',
+    details: 'Auspicious Inauguration ceremony on sacred Panchami tithi by Ms Gitika Pandey (General Manager, Eastern Railway), followed by Cultural Programme & High Tea at Colvin Court.',
+    calendarTitle: 'Inauguration (Panchami) - Colvin Court Durga Puja 2026',
+    calendarDetails: 'Inaugurated by Ms Gitika Pandey (General Manager, Eastern Railway). Events: Inauguration Followed by Cultural Programme & High Tea at Colvin Court.',
     calendarStart: '20261015T111500Z',
     calendarEnd: '20261015T140000Z',
   },
   {
     eyebrow: 'MAHASAPTAMI',
     dayName: 'Sunday, Oct 18',
-    title: 'Bhajan Sandhya & Dandiya Raas',
+    title: 'Bhajan Sandhya & Dandiya',
     date: 'Sunday, 18.10.2026 at 7:30 pm',
     venue: 'at Riviera, Railway Officers’ Club',
-    extra: 'Followed by Festive Dinner',
+    extra: 'Followed by Festive Dinner at Riviera',
     icon: '✧',
-    details: 'Nabapatrika Prabesh (Kola Bou Snan) at dawn, Mahasaptami Puja, and grand evening Bhajan Sandhya & Dandiya.',
-    calendarTitle: 'Mahasaptami Bhajan Sandhya & Dandiya - Colvin Court Durga Puja',
-    calendarDetails: 'Bhajan Sandhya & Dandiya at Riviera, followed by Dinner.',
+    details: 'Nabapatrika Prabesh (Kola Bou Snan) at dawn, Mahasaptami Puja, and grand evening Bhajan Sandhya & Dandiya followed by Dinner at Riviera.',
+    calendarTitle: 'Saptami Bhajan Sandhya & Dandiya - Colvin Court Durga Puja',
+    calendarDetails: 'Bhajan Sandhya & Dandiya at 7:30 pm followed by Festive Dinner at Riviera.',
     calendarStart: '20261018T140000Z',
     calendarEnd: '20261018T173000Z',
   },
@@ -77,16 +77,16 @@ const fullPanchang: EventItem[] = [
     calendarEnd: '20261020T083000Z',
   },
   {
-    eyebrow: 'VIJAYA DASHAMI & SINDUR KHELA',
+    eyebrow: 'DASHMI & SINDUR KHELA',
     dayName: 'Wednesday, Oct 21',
-    title: 'A Celebration of Togetherness',
+    title: 'Sindur Khela & Cultural Programme',
     date: 'Wednesday, 21.10.2026 at 10:30 am',
-    venue: 'Colvin Court (Cultural Programme at 12:30 pm)',
-    extra: 'Followed by Festive Lunch at RIVIERA',
+    venue: 'at Colvin Court (Lunch at Riviera)',
+    extra: 'To be graced by Ms. Gitika Pandey (President/ERWWO) · 12:30 pm Cultural Programme followed by Lunch at RIVIERA',
     icon: '✺',
-    details: 'Devi Bisharjan, sacred Sindur Khela among married women, exchanging sweet Bijoya Shubhechha and festive togetherness.',
-    calendarTitle: 'Dashami & Sindur Khela - Colvin Court Durga Puja',
-    calendarDetails: 'Sindur Khela at Colvin Court (10:30 am), Cultural Programme (12:30 pm), followed by Lunch at Riviera.',
+    details: 'Dashmi & sacred Sindur Khela at Colvin Court at 10:30 am, to be graced by Ms. Gitika Pandey (President/ERWWO). Followed by Cultural Programme at 12:30 pm and Lunch at RIVIERA.',
+    calendarTitle: 'Dashmi & Sindur Khela - Colvin Court Durga Puja',
+    calendarDetails: 'Sindur Khela at Colvin Court (10:30 am) graced by Ms Gitika Pandey (President/ERWWO), Cultural Programme at 12:30 pm, followed by Lunch at Riviera. Dress Code: Ladies: Saree (Laal Paar) | Gents: Kurta Pyjama.',
     calendarStart: '20261021T050000Z',
     calendarEnd: '20261021T093000Z',
   },
@@ -131,20 +131,14 @@ export default function Home() {
   // Audio Ref using the audio file in public/
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // Enter Invitation Gate and start audio from 3 seconds
+  // Enter Invitation Gate and play new audio from start
   const handleEnter = () => {
     setEntered(true);
     setMusic(true);
     if (audioRef.current) {
       const el = audioRef.current;
-      try {
-        el.currentTime = 3;
-      } catch {}
-      el.play().then(() => {
-        if (el.currentTime < 2.5) {
-          el.currentTime = 3;
-        }
-      }).catch((err) => {
+      el.currentTime = 0;
+      el.play().catch((err) => {
         console.warn('Autoplay error:', err);
       });
     }
@@ -158,9 +152,6 @@ export default function Home() {
       el.pause();
       setMusic(false);
     } else {
-      if (el.currentTime < 3) {
-        el.currentTime = 3;
-      }
       el.play().catch(() => {});
       setMusic(true);
     }
@@ -176,7 +167,7 @@ export default function Home() {
   // Personalized Share text generator
   const getShareText = () => {
     const nameStr = guestName.trim() ? `Personalized Invitation for ${guestName}` : 'Durga Puja Invitation';
-    return `🪔 *Colvin Court Sarbojanin Durga Puja 2026* 🪔\n${nameStr}\n\nJoin us in celebrating Sharadotsav & the homecoming of Maa Durga at Railway Officers’ Club, Howrah.\n\n📅 Date: Oct 15 - Oct 21, 2026\n📍 Location: Railway Officers’ Club, Howrah\n\nMay Maa Durga bless you and your family with boundless joy, peace, & health! Shubho Sharadiya!`;
+    return `🪔 *Colvin Court Sarbojanin Durga Puja 2026* 🪔\n${nameStr}\n\nJoin us in celebrating Sharadotsav & the homecoming of Maa Durga at Railway Officers’ Club, Howrah.\n\n📅 Date: Oct 15 - Oct 21, 2026\n📍 Location: Railway Officers’ Club, Howrah\n\nMay Maa Durga bless you and your family with boundless joy, peace, & health! Shubh Sharadiya! (शुभ शारदीय!)`;
   };
 
   const handleCopyGreeting = () => {
@@ -263,7 +254,7 @@ export default function Home() {
                 className="poster-image"
               />
 
-              {/* Real Interactive Button & Sound Hint Layer */}
+              {/* Real Interactive Button */}
               <div className="poster-interactive-layer">
                 <motion.button
                   className="coded-enter-btn"
@@ -274,11 +265,6 @@ export default function Home() {
                   <span>TAP TO ENTER</span>
                   <span className="arrow-icon">→</span>
                 </motion.button>
-
-                <div className="coded-sound-hint">
-                  <span>♫</span>
-                  <span>SOUND ON FOR THE FULL EXPERIENCE</span>
-                </div>
               </div>
             </motion.div>
           </motion.div>
@@ -291,6 +277,8 @@ export default function Home() {
 
       {/* Hero Section */}
       <section className="hero-showcase">
+        <div className="hero-showcase-bg" />
+        <div className="hero-showcase-overlay" />
         <div className="hero-content">
           <div className="temple-arch-motif">✧ ॐ ✧</div>
           <p className="kicker-label">RAILWAY OFFICERS’ CLUB · HOWRAH</p>
@@ -302,7 +290,7 @@ export default function Home() {
             <em>Sarbojanin Durga Puja</em>
           </div>
 
-          <div className="hero-year-badge">2026 · 1433 B.S.</div>
+          <div className="hero-year-badge">2026</div>
 
           <LotusPetalIcon />
         </div>
@@ -373,22 +361,24 @@ export default function Home() {
           <h3 className="programme-sub">COLVIN COURT — 2026</h3>
           <div className="programme-rule" />
 
-          <p className="kicker-label">GRAND INAUGURATION OF</p>
+          <p className="kicker-label">INAUGURATION (PANCHAMI)</p>
           <p className="programme-script">Colvin Court Sarbojanin Durga Puja, Howrah</p>
 
           <div className="by-honor">
-            by <strong>Ms Gitika Pandey</strong>
-            <span>(PRESIDENT / ERWWO)</span>
+            Inaugurated by <strong>Ms Gitika Pandey</strong>
+            <span>(General Manager, Eastern Railway)</span>
           </div>
 
-          <p className="event-date-text">Thursday, 15.10.2026 · 4:45 pm</p>
-          <p className="event-follow-text">followed by Cultural Programme &amp; High Tea at Colvin Court.</p>
+          <p className="event-date-text">Thursday, 15.10.2026 at 04:45 pm</p>
+          <p className="event-follow-text">
+            Events: Inauguration Followed by Cultural Programme &amp; High Tea at Colvin Court
+          </p>
 
           <div className="action-group">
             <a
               href={getGoogleCalendarUrl(
-                'Inauguration - Colvin Court Durga Puja 2026',
-                'Inauguration by Ms Gitika Pandey (President/ERWWO) followed by Cultural Programme & High Tea.',
+                'Inauguration (Panchami) - Colvin Court Durga Puja 2026',
+                'Inaugurated by Ms Gitika Pandey (General Manager, Eastern Railway). Events: Inauguration Followed by Cultural Programme & High Tea at Colvin Court.',
                 'Railway Officers Club, Colvin Court, Howrah',
                 '20261015T111500Z',
                 '20261015T140000Z'
@@ -400,7 +390,7 @@ export default function Home() {
               📅 Save Inauguration Date
             </a>
             <a
-              href="https://maps.google.com/?q=Railway+Officers+Club+Howrah"
+              href="https://maps.app.goo.gl/HhW5qtDgqxCnPGJr6?g_st=ac"
               target="_blank"
               rel="noopener noreferrer"
               className="action-btn"
@@ -456,9 +446,10 @@ export default function Home() {
 
             {activeTab === 4 && (
               <div className="dress-box">
-                <b>Traditional Attire Recommended</b>
-                <br />
-                Ladies: Traditional Saree (Laal Paar / White &amp; Red) &nbsp;|&nbsp; Gents: Kurta Pyjama / Dhoti
+                <span className="dress-title">✨ DRESS CODE</span>
+                <p style={{ margin: '6px 0 0', fontWeight: 600, fontSize: 15 }}>
+                  <strong>Ladies:</strong> Saree (Laal Paar) &nbsp;•&nbsp; <strong>Gents:</strong> Kurta Pyjama
+                </p>
               </div>
             )}
 
@@ -480,17 +471,33 @@ export default function Home() {
             </div>
           </motion.div>
         </AnimatePresence>
+
+        {/* Global Festive Dress Code Callout */}
+        <div className="dress-code-global-card">
+          <span className="dress-badge">✨ FESTIVE ATTIRE &amp; DRESS CODE</span>
+          <div className="dress-code-content">
+            <div className="dress-item">
+              <span className="dress-role">LADIES:</span>
+              <span className="dress-spec">Saree (Laal Paar)</span>
+            </div>
+            <div className="dress-divider">|</div>
+            <div className="dress-item">
+              <span className="dress-role">GENTS:</span>
+              <span className="dress-spec">Kurta Pyjama</span>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* Personalized Invitation & Shubho Sharadiya Greetings */}
       <section className="section-wrapper">
         <div className="greeting-card-generator">
-          <p className="kicker-label">PERSONALIZED BLESSINGS</p>
-          <h2 style={{ fontFamily: 'Cormorant Garamond', fontSize: 32, color: 'var(--maroon)', margin: '8px 0' }}>
-            Share Shubho Sharadiya Wishes
+          <p className="kicker-label">हार्दिक शुभकामनाएं</p>
+          <h2 style={{ fontFamily: 'Noto Serif Devanagari', fontSize: 'clamp(24px, 5vw, 32px)', color: 'var(--maroon)', margin: '8px 0' }}>
+            शारदीय शुभकामनाएं साझा करें
           </h2>
-          <p style={{ fontSize: 14, color: 'var(--maroon-rich)' }}>
-            Personalize this sacred invitation with your family name to invite friends and relatives!
+          <p style={{ fontFamily: 'Noto Serif Devanagari', fontSize: 14, color: 'var(--maroon-rich)' }}>
+            अपने परिवार के नाम से इस पावन आमंत्रण को परिजनों और मित्रों के साथ साझा करें!
           </p>
 
           <input
@@ -530,22 +537,22 @@ export default function Home() {
       {/* Closing Section */}
       <section className="section-wrapper" style={{ paddingBottom: 100 }}>
         <LotusPetalIcon />
-        <p className="kicker-label" style={{ marginTop: 12 }}>MAA’S BLESSINGS · OUR TOGETHERNESS</p>
+        <p className="kicker-label" style={{ marginTop: 12 }}>माँ का आशीर्वाद · हमारा मिलन</p>
         <h2 style={{ fontFamily: 'Noto Serif Devanagari', color: 'var(--maroon)', fontSize: 'clamp(26px, 6vw, 42px)', lineHeight: 1.5, margin: '14px 0' }}>
           आइए, माँ के चरणों में
           <br />
-          <em style={{ fontFamily: 'Cormorant Garamond', fontStyle: 'italic', display: 'block' }}>
-            এক সাথে আনন্দ ও মিলনের উৎসব উদযাপন করি।
-          </em>
+          <span style={{ display: 'block', fontSize: 'clamp(22px, 5.2vw, 36px)', fontWeight: 600, color: 'var(--maroon-rich)', marginTop: 8 }}>
+            एक साथ आनंद और मिलन का उत्सव मनाएं।
+          </span>
         </h2>
-        <p style={{ fontFamily: 'Cormorant Garamond', fontSize: 'clamp(20px, 4.5vw, 26px)', color: 'var(--maroon-rich)', fontStyle: 'italic' }}>
-          We warmly anticipate your auspicious presence to celebrate together!
+        <p style={{ fontFamily: 'Noto Serif Devanagari', fontSize: 'clamp(18px, 4.5vw, 24px)', color: 'var(--maroon-rich)', margin: '10px 0' }}>
+          आपकी गरिमामयी उपस्थिति हमारे इस पावन उत्सव की शोभा बढ़ाएगी!
         </p>
 
         <div className="programme-rule" />
 
         <p className="kicker-label" style={{ marginBottom: 4 }}>
-          Warm Regards &amp; Shubho Sharadiya
+          सादर प्रणाम एवं शारदीय शुभकामनाएं
         </p>
         <strong style={{ fontFamily: 'Cormorant Garamond', letterSpacing: '0.15em', color: 'var(--maroon)', fontSize: 20 }}>
           RAILWAY OFFICERS’ CLUB, HOWRAH
@@ -553,7 +560,7 @@ export default function Home() {
 
         <div className="action-group" style={{ marginTop: 28 }}>
           <a
-            href="https://maps.google.com/?q=Railway+Officers+Club+Howrah"
+            href="https://maps.app.goo.gl/HhW5qtDgqxCnPGJr6?g_st=ac"
             target="_blank"
             rel="noopener noreferrer"
             className="action-btn primary"
