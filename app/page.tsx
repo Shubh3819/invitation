@@ -97,7 +97,6 @@ export default function Home() {
   const [music, setMusic] = useState(false);
   const [pushpanjaliCount, setPushpanjaliCount] = useState(108);
   const [showBlessing, setShowBlessing] = useState(false);
-  const [activeTab, setActiveTab] = useState<number>(0);
 
   // Audio Ref using the audio file in public/
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -368,84 +367,58 @@ export default function Home() {
           Sacred Rituals &amp; Celebrations
         </h2>
 
-        <div className="panchang-tabs">
-          {fullPanchang.map((item, idx) => (
-            <button
+        {/* All Panchang dates shown vertically in chronological order */}
+        <div className="panchang-scroll-list">
+          {fullPanchang.map((item) => (
+            <motion.div
               key={item.eyebrow}
-              className={`tab-btn ${activeTab === idx ? 'active' : ''}`}
-              onClick={() => setActiveTab(idx)}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.15 }}
+              transition={{ duration: 0.5 }}
+              className="arch-card"
+              style={{ maxWidth: 580 }}
             >
-              {item.icon} {item.dayName}
-            </button>
-          ))}
-        </div>
+              <div style={{ fontSize: 48, color: 'var(--gold-dark)', marginBottom: 8 }}>{item.icon}</div>
+              <p className="kicker-label">{item.eyebrow}</p>
+              <h2 style={{ fontFamily: 'Cormorant Garamond', fontSize: 'clamp(28px, 6vw, 40px)', color: 'var(--maroon)', margin: '8px 0' }}>
+                {item.title}
+              </h2>
+              <p className="event-date-text">{item.date}</p>
+              <p className="programme-script">{item.venue}</p>
+              <p className="event-follow-text" style={{ marginTop: 6 }}>{item.extra}</p>
 
-        {/* Active Panchang Card */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeTab}
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -15 }}
-            transition={{ duration: 0.3 }}
-            className="arch-card"
-            style={{ maxWidth: 580 }}
-          >
-            <div style={{ fontSize: 48, color: 'var(--gold-dark)', marginBottom: 8 }}>{fullPanchang[activeTab].icon}</div>
-            <p className="kicker-label">{fullPanchang[activeTab].eyebrow}</p>
-            <h2 style={{ fontFamily: 'Cormorant Garamond', fontSize: 'clamp(28px, 6vw, 40px)', color: 'var(--maroon)', margin: '8px 0' }}>
-              {fullPanchang[activeTab].title}
-            </h2>
-            <p className="event-date-text">{fullPanchang[activeTab].date}</p>
-            <p className="programme-script">{fullPanchang[activeTab].venue}</p>
-            <p className="event-follow-text" style={{ marginTop: 6 }}>{fullPanchang[activeTab].extra}</p>
+              <p style={{ fontSize: 14, color: '#4a1924', marginTop: 14, lineHeight: 1.55, fontWeight: 500 }}>
+                {item.details}
+              </p>
 
-            <p style={{ fontSize: 14, color: '#4a1924', marginTop: 14, lineHeight: 1.55, fontWeight: 500 }}>
-              {fullPanchang[activeTab].details}
-            </p>
+              {item.dayName.includes('Oct 21') && (
+                <div className="dress-box">
+                  <span className="dress-title">✨ DRESS CODE</span>
+                  <p style={{ margin: '6px 0 0', fontWeight: 600, fontSize: 15 }}>
+                    <strong>Ladies:</strong> Saree (Laal Paar) &nbsp;•&nbsp; <strong>Gents:</strong> Kurta Pyjama
+                  </p>
+                </div>
+              )}
 
-            {fullPanchang[activeTab]?.dayName.includes('Oct 21') && (
-              <div className="dress-box">
-                <span className="dress-title">✨ DRESS CODE</span>
-                <p style={{ margin: '6px 0 0', fontWeight: 600, fontSize: 15 }}>
-                  <strong>Ladies:</strong> Saree (Laal Paar) &nbsp;•&nbsp; <strong>Gents:</strong> Kurta Pyjama
-                </p>
+              <div className="action-group">
+                <a
+                  href={getGoogleCalendarUrl(
+                    item.calendarTitle,
+                    item.calendarDetails,
+                    'Railway Officers Club, Howrah',
+                    item.calendarStart,
+                    item.calendarEnd
+                  )}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="action-btn primary"
+                >
+                  📅 Add {item.dayName} to Google Calendar
+                </a>
               </div>
-            )}
-
-            <div className="action-group">
-              <a
-                href={getGoogleCalendarUrl(
-                  fullPanchang[activeTab].calendarTitle,
-                  fullPanchang[activeTab].calendarDetails,
-                  'Railway Officers Club, Howrah',
-                  fullPanchang[activeTab].calendarStart,
-                  fullPanchang[activeTab].calendarEnd
-                )}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="action-btn primary"
-              >
-                📅 Add {fullPanchang[activeTab].dayName} to Google Calendar
-              </a>
-            </div>
-          </motion.div>
-        </AnimatePresence>
-
-        {/* Global Festive Dress Code Callout */}
-        <div className="dress-code-global-card">
-          <span className="dress-badge">✨ FESTIVE ATTIRE &amp; DRESS CODE</span>
-          <div className="dress-code-content">
-            <div className="dress-item">
-              <span className="dress-role">LADIES:</span>
-              <span className="dress-spec">Saree (Laal Paar)</span>
-            </div>
-            <div className="dress-divider">|</div>
-            <div className="dress-item">
-              <span className="dress-role">GENTS:</span>
-              <span className="dress-spec">Kurta Pyjama</span>
-            </div>
-          </div>
+            </motion.div>
+          ))}
         </div>
       </section>
 
@@ -469,20 +442,6 @@ export default function Home() {
         <p className="kicker-label" style={{ marginBottom: 4 }}>
           सादर प्रणाम एवं शारदीय शुभकामनाएं
         </p>
-        <strong style={{ fontFamily: 'Cormorant Garamond', letterSpacing: '0.15em', color: 'var(--maroon)', fontSize: 20 }}>
-          RAILWAY OFFICERS’ CLUB, HOWRAH
-        </strong>
-
-        <div className="action-group" style={{ marginTop: 28 }}>
-          <a
-            href="https://maps.app.goo.gl/HhW5qtDgqxCnPGJr6?g_st=ac"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="action-btn primary"
-          >
-            📍 Venue Location: Railway Officers’ Club, Howrah
-          </a>
-        </div>
       </section>
 
       {/* Clean Floating Audio Controls Pill */}
