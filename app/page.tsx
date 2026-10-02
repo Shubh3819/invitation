@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React, { useState, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 // Event & Panchang Schedule Data
 interface EventItem {
@@ -21,55 +21,69 @@ interface EventItem {
 
 const fullPanchang: EventItem[] = [
   {
-    eyebrow: 'INAUGURATION (PANCHAMI)',
-    dayName: 'Thursday, Oct 15',
-    title: 'Grand Inauguration & Cultural Programme',
-    date: 'Thursday, 15.10.2026 at 04:45 pm',
-    venue: 'at Colvin Court, Railway Officers’ Club, Howrah',
-    extra: 'Inaugurated by Ms Gitika Pandey (General Manager, Eastern Railway) followed by Cultural Programme & High Tea at Colvin Court.',
-    icon: '🪔',
-    details: 'Auspicious Inauguration ceremony on sacred Panchami tithi by Ms Gitika Pandey (General Manager, Eastern Railway), followed by Cultural Programme & High Tea at Colvin Court.',
-    calendarTitle: 'Inauguration (Panchami) - Colvin Court Durga Puja 2026',
-    calendarDetails: 'Inaugurated by Ms Gitika Pandey (General Manager, Eastern Railway). Events: Inauguration Followed by Cultural Programme & High Tea at Colvin Court.',
-    calendarStart: '20261015T111500Z',
-    calendarEnd: '20261015T140000Z',
+    eyebrow: "INAUGURATION (PANCHAMI)",
+    dayName: "Thursday, Oct 15",
+    title: "Grand Inauguration & Cultural Programme",
+    date: "Thursday, 15.10.2026 at 04:45 pm",
+    venue: "at Colvin Court, Railway Officers’ Club, Howrah",
+    extra:
+      "Inaugurated by Ms Gitika Pandey (General Manager, Eastern Railway) followed by Cultural Programme & High Tea at Colvin Court.",
+    icon: "🪔",
+    details:
+      "Auspicious Inauguration ceremony on sacred Panchami tithi by Ms Gitika Pandey (General Manager, Eastern Railway), followed by Cultural Programme & High Tea at Colvin Court.",
+    calendarTitle: "Inauguration (Panchami) - Colvin Court Durga Puja 2026",
+    calendarDetails:
+      "Inaugurated by Ms Gitika Pandey (General Manager, Eastern Railway). Events: Inauguration Followed by Cultural Programme & High Tea at Colvin Court.",
+    calendarStart: "20261015T111500Z",
+    calendarEnd: "20261015T140000Z",
   },
   {
-    eyebrow: 'MAHASAPTAMI',
-    dayName: 'Sunday, Oct 18',
-    title: 'Bhajan Sandhya & Dandiya',
-    date: 'Sunday, 18.10.2026 at 7:30 pm',
-    venue: 'at Riviera, Railway Officers’ Club',
-    extra: 'Followed by Festive Dinner at Riviera',
-    icon: '✧',
-    details: 'Nabapatrika Prabesh (Kola Bou Snan) at dawn, Mahasaptami Puja, and grand evening Bhajan Sandhya & Dandiya followed by Dinner at Riviera.',
-    calendarTitle: 'Saptami Bhajan Sandhya & Dandiya - Colvin Court Durga Puja',
-    calendarDetails: 'Bhajan Sandhya & Dandiya at 7:30 pm followed by Festive Dinner at Riviera.',
-    calendarStart: '20261018T140000Z',
-    calendarEnd: '20261018T173000Z',
+    eyebrow: "MAHASAPTAMI",
+    dayName: "Sunday, Oct 18",
+    title: "Bhajan Sandhya & Dandiya",
+    date: "Sunday, 18.10.2026 at 7:30 pm",
+    venue: "at Riviera, Railway Officers’ Club",
+    extra: "Followed by Festive Dinner at Riviera",
+    icon: "✧",
+    details:
+      "Nabapatrika Prabesh (Kola Bou Snan) at dawn, Mahasaptami Puja, and grand evening Bhajan Sandhya & Dandiya followed by Dinner at Riviera.",
+    calendarTitle: "Saptami Bhajan Sandhya & Dandiya - Colvin Court Durga Puja",
+    calendarDetails:
+      "Bhajan Sandhya & Dandiya at 7:30 pm followed by Festive Dinner at Riviera.",
+    calendarStart: "20261018T140000Z",
+    calendarEnd: "20261018T173000Z",
   },
 
   {
-    eyebrow: 'DASHMI & SINDUR KHELA',
-    dayName: 'Wednesday, Oct 21',
-    title: 'Sindur Khela & Cultural Programme',
-    date: 'Wednesday, 21.10.2026 at 10:30 am',
-    venue: 'at Colvin Court (Lunch at Riviera)',
-    extra: 'To be graced by Ms. Gitika Pandey (President/ERWWO) · 12:30 pm Cultural Programme followed by Lunch at RIVIERA',
-    icon: '✺',
-    details: 'Dashmi & sacred Sindur Khela at Colvin Court at 10:30 am, to be graced by Ms. Gitika Pandey (President/ERWWO). Followed by Cultural Programme at 12:30 pm and Lunch at RIVIERA.',
-    calendarTitle: 'Dashmi & Sindur Khela - Colvin Court Durga Puja',
-    calendarDetails: 'Sindur Khela at Colvin Court (10:30 am) graced by Ms Gitika Pandey (President/ERWWO), Cultural Programme at 12:30 pm, followed by Lunch at Riviera. Dress Code: Ladies: Saree (Laal Paar) | Gents: Kurta Pyjama.',
-    calendarStart: '20261021T050000Z',
-    calendarEnd: '20261021T093000Z',
+    eyebrow: "DASHMI & SINDUR KHELA",
+    dayName: "Wednesday, Oct 21",
+    title: "Sindur Khela & Cultural Programme",
+    date: "Wednesday, 21.10.2026 at 10:30 am",
+    venue: "at Colvin Court (Lunch at Riviera)",
+    extra:
+      "To be graced by Ms. Gitika Pandey (President/ERWWO) · 12:30 pm Cultural Programme followed by Lunch at RIVIERA",
+    icon: "✺",
+    details:
+      "Dashmi & sacred Sindur Khela at Colvin Court at 10:30 am, to be graced by Ms. Gitika Pandey (President/ERWWO). Followed by Cultural Programme at 12:30 pm and Lunch at RIVIERA.",
+    calendarTitle: "Dashmi & Sindur Khela - Colvin Court Durga Puja",
+    calendarDetails:
+      "Sindur Khela at Colvin Court (10:30 am) graced by Ms Gitika Pandey (President/ERWWO), Cultural Programme at 12:30 pm, followed by Lunch at Riviera. Dress Code: Ladies: Saree (Laal Paar) | Gents: Kurta Pyjama.",
+    calendarStart: "20261021T050000Z",
+    calendarEnd: "20261021T093000Z",
   },
 ];
 
 // Google Calendar URL Generator
-function getGoogleCalendarUrl(title: string, details: string, location: string, start: string, end: string) {
-  const baseUrl = 'https://calendar.google.com/calendar/render';
+function getGoogleCalendarUrl(
+  title: string,
+  details: string,
+  location: string,
+  start: string,
+  end: string,
+) {
+  const baseUrl = "https://calendar.google.com/calendar/render";
   const params = new URLSearchParams({
-    action: 'TEMPLATE',
+    action: "TEMPLATE",
     text: title,
     details: details,
     location: location,
@@ -81,12 +95,42 @@ function getGoogleCalendarUrl(title: string, details: string, location: string, 
 // Lotus Petal Icon Component
 function LotusPetalIcon() {
   return (
-    <svg viewBox="0 0 100 65" className="lotus-flower-svg" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M 50 5 C 40 25 35 48 50 60 C 65 48 60 25 50 5 Z" fill="#e67389" stroke="#d4af37" strokeWidth="1.2" />
-      <path d="M 36 18 C 22 30 20 46 42 58 C 36 44 38 28 36 18 Z" fill="#f4b4be" stroke="#d4af37" strokeWidth="1" />
-      <path d="M 64 18 C 78 30 80 46 58 58 C 64 44 62 28 64 18 Z" fill="#f4b4be" stroke="#d4af37" strokeWidth="1" />
-      <path d="M 22 32 C 10 40 12 52 32 58 C 24 48 24 38 22 32 Z" fill="#ea9ea7" stroke="#d4af37" strokeWidth="1" />
-      <path d="M 78 32 C 90 40 88 52 68 58 C 76 48 76 38 78 32 Z" fill="#ea9ea7" stroke="#d4af37" strokeWidth="1" />
+    <svg
+      viewBox="0 0 100 65"
+      className="lotus-flower-svg"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M 50 5 C 40 25 35 48 50 60 C 65 48 60 25 50 5 Z"
+        fill="#e67389"
+        stroke="#d4af37"
+        strokeWidth="1.2"
+      />
+      <path
+        d="M 36 18 C 22 30 20 46 42 58 C 36 44 38 28 36 18 Z"
+        fill="#f4b4be"
+        stroke="#d4af37"
+        strokeWidth="1"
+      />
+      <path
+        d="M 64 18 C 78 30 80 46 58 58 C 64 44 62 28 64 18 Z"
+        fill="#f4b4be"
+        stroke="#d4af37"
+        strokeWidth="1"
+      />
+      <path
+        d="M 22 32 C 10 40 12 52 32 58 C 24 48 24 38 22 32 Z"
+        fill="#ea9ea7"
+        stroke="#d4af37"
+        strokeWidth="1"
+      />
+      <path
+        d="M 78 32 C 90 40 88 52 68 58 C 76 48 76 38 78 32 Z"
+        fill="#ea9ea7"
+        stroke="#d4af37"
+        strokeWidth="1"
+      />
       <circle cx="50" cy="58" r="3.5" fill="#d4af37" />
     </svg>
   );
@@ -109,7 +153,7 @@ export default function Home() {
       const el = audioRef.current;
       el.currentTime = 0;
       el.play().catch((err) => {
-        console.warn('Autoplay error:', err);
+        console.warn("Autoplay error:", err);
       });
     }
   };
@@ -129,7 +173,7 @@ export default function Home() {
 
   // Pushpanjali Floral Offering Action
   const handlePushpanjali = () => {
-    setPushpanjaliCount(prev => prev + 1);
+    setPushpanjaliCount((prev) => prev + 1);
     setShowBlessing(true);
     setTimeout(() => setShowBlessing(false), 4500);
   };
@@ -137,18 +181,12 @@ export default function Home() {
   return (
     <main>
       {/* Background Audio Element from public folder (starts from 3s) */}
-      <audio
-        ref={audioRef}
-        src="/music.mp3"
-        preload="auto"
-        loop
-        playsInline
-      />
+      <audio ref={audioRef} src="/music.mp3" preload="auto" loop playsInline />
 
       {/* Falling Lotus, Hibiscus & Marigold Flower Petals */}
       <div className="petals-container">
         {Array.from({ length: 18 }).map((_, i) => {
-          const petalTypes = ['lotus', 'hibiscus', 'marigold'];
+          const petalTypes = ["lotus", "hibiscus", "marigold"];
           const type = petalTypes[i % 3];
           return (
             <div
@@ -179,7 +217,10 @@ export default function Home() {
             <div>
               <strong>पुष्पांजलि गृहीत्वा शुभं भवतु!</strong>
               <br />
-              <small>Maa Durga’s divine blessings are bestowed upon you and your loved ones!</small>
+              <small>
+                Maa Durga’s divine blessings are bestowed upon you and your
+                loved ones!
+              </small>
             </div>
           </motion.div>
         )}
@@ -194,7 +235,11 @@ export default function Home() {
           <motion.div
             className="landing-gate"
             initial={{ opacity: 1 }}
-            exit={{ opacity: 0, scale: 1.04, transition: { duration: 0.85, ease: 'easeInOut' } }}
+            exit={{
+              opacity: 0,
+              scale: 1.04,
+              transition: { duration: 0.85, ease: "easeInOut" },
+            }}
           >
             <div className="landing-ambient-glow" />
 
@@ -202,7 +247,7 @@ export default function Home() {
               className="poster-container"
               initial={{ scale: 0.92, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, ease: 'easeOut' }}
+              transition={{ duration: 0.9, ease: "easeOut" }}
             >
               {/* Cleaned Artwork without static button */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -240,7 +285,7 @@ export default function Home() {
         <div className="hero-content">
           <div className="temple-arch-motif">✧ ॐ ✧</div>
           <p className="kicker-label">RAILWAY OFFICERS’ CLUB · HOWRAH</p>
-          
+
           <h1 className="hero-sharadotsav">शरदोत्सव</h1>
 
           <div className="hero-venue-heading">
@@ -255,7 +300,10 @@ export default function Home() {
       </section>
 
       {/* Sacred Mantra Section */}
-      <section className="section-wrapper" style={{ paddingTop: 30, paddingBottom: 12 }}>
+      <section
+        className="section-wrapper"
+        style={{ paddingTop: 30, paddingBottom: 12 }}
+      >
         <motion.div
           className="arch-card"
           initial={{ opacity: 0, y: 30 }}
@@ -275,34 +323,52 @@ export default function Home() {
             नमस्तस्यै नमस्तस्यै नमस्तस्यै नमो नमः॥
           </div>
           <p className="shloka-translit">
-            &ldquo;Sarva-mangala-mangalye Shive Sarvaartha-saadhike,
-            Sharanye Tryambake Gauri Naaraayani Namo-stu Te.&rdquo;
+            &ldquo;Sarva-mangala-mangalye Shive Sarvaartha-saadhike, Sharanye
+            Tryambake Gauri Naaraayani Namo-stu Te.&rdquo;
           </p>
           <p className="shloka-meaning">
-            Salutations to the Divine Mother Narayani, the embodiment of auspiciousness, the fulfiller of all pure desires, the eternal refuge of the universe.
+            Salutations to the Divine Mother Narayani, the embodiment of
+            auspiciousness, the fulfiller of all pure desires, the eternal
+            refuge of the universe.
           </p>
           <LotusPetalIcon />
         </motion.div>
       </section>
 
       {/* Virtual Pushpanjali Offering Ritual */}
-      <section className="section-wrapper" style={{ paddingTop: 10, paddingBottom: 35 }}>
+      <section
+        className="section-wrapper"
+        style={{ paddingTop: 50, paddingBottom: 35 }}
+      >
         <div className="pushpanjali-card">
           <p className="kicker-label">VIRTUAL DEVOTIONAL RITUAL</p>
-          <h2 style={{ fontFamily: 'Noto Serif Devanagari', color: 'var(--maroon)', fontSize: 32, margin: '10px 0 6px' }}>
+          <h2
+            style={{
+              fontFamily: "Noto Serif Devanagari",
+              color: "var(--maroon)",
+              fontSize: 32,
+              margin: "10px 0 6px",
+            }}
+          >
             माँ दुर्गा के चरणों में पुष्पांजलि
           </h2>
-          <p style={{ fontFamily: 'Cormorant Garamond', fontStyle: 'italic', fontSize: 20, color: 'var(--maroon-rich)' }}>
-            Offer fresh fragrant Hibiscus, Lotus petals, and Belpatra to Maa Durga.
+          <p
+            style={{
+              fontFamily: "Cormorant Garamond",
+              fontStyle: "italic",
+              fontSize: 20,
+              color: "var(--maroon-rich)",
+            }}
+          >
+            Offer fresh fragrant Hibiscus, Lotus petals, and Belpatra to Maa
+            Durga.
           </p>
 
-          <div>
-            <div className="offering-counter">
-              🪷 {pushpanjaliCount} Pushpanjali Offerings Made
-            </div>
-          </div>
-
-          <button className="offer-btn" onClick={handlePushpanjali}>
+          <button
+            className="offer-btn"
+            onClick={handlePushpanjali}
+            style={{ marginTop: "25px" }}
+          >
             <span>🪷</span> OFFER PUSHPANJALI (पुष्पांजलि अर्पित करें)
           </button>
         </div>
@@ -314,14 +380,23 @@ export default function Home() {
           <div className="temple-arch-motif">ॐ</div>
           <p className="kicker-label">AUSPICIOUS PROGRAMME OF</p>
           <h2 className="programme-title">SHRI SHRI DURGA PUJA</h2>
-          <p style={{ fontFamily: 'Cormorant Garamond', fontStyle: 'italic', fontSize: 20, color: 'var(--maroon-rich)' }}>
+          <p
+            style={{
+              fontFamily: "Cormorant Garamond",
+              fontStyle: "italic",
+              fontSize: 20,
+              color: "var(--maroon-rich)",
+            }}
+          >
             at
           </p>
           <h3 className="programme-sub">COLVIN COURT — 2026</h3>
           <div className="programme-rule" />
 
           <p className="kicker-label">INAUGURATION (PANCHAMI)</p>
-          <p className="programme-script">Colvin Court Sarbojanin Durga Puja, Howrah</p>
+          <p className="programme-script">
+            Colvin Court Sarbojanin Durga Puja, Howrah
+          </p>
 
           <div className="by-honor">
             Inaugurated by <strong>Ms Gitika Pandey</strong>
@@ -330,17 +405,18 @@ export default function Home() {
 
           <p className="event-date-text">Thursday, 15.10.2026 at 04:45 pm</p>
           <p className="event-follow-text">
-            Events: Inauguration Followed by Cultural Programme &amp; High Tea at Colvin Court
+            Events: Inauguration Followed by Cultural Programme &amp; High Tea
+            at Colvin Court
           </p>
 
           <div className="action-group">
             <a
               href={getGoogleCalendarUrl(
-                'Inauguration (Panchami) - Colvin Court Durga Puja 2026',
-                'Inaugurated by Ms Gitika Pandey (General Manager, Eastern Railway). Events: Inauguration Followed by Cultural Programme & High Tea at Colvin Court.',
-                'Railway Officers Club, Colvin Court, Howrah',
-                '20261015T111500Z',
-                '20261015T140000Z'
+                "Inauguration (Panchami) - Colvin Court Durga Puja 2026",
+                "Inaugurated by Ms Gitika Pandey (General Manager, Eastern Railway). Events: Inauguration Followed by Cultural Programme & High Tea at Colvin Court.",
+                "Railway Officers Club, Colvin Court, Howrah",
+                "20261015T111500Z",
+                "20261015T140000Z",
               )}
               target="_blank"
               rel="noopener noreferrer"
@@ -363,7 +439,14 @@ export default function Home() {
       {/* Day-by-Day Sacred Panchang Schedule Selector */}
       <section className="section-wrapper">
         <p className="kicker-label">SHARADIYA PANCHANG</p>
-        <h2 style={{ fontFamily: 'Cormorant Garamond', fontSize: 'clamp(32px, 7vw, 46px)', color: 'var(--maroon)', margin: '6px 0 10px' }}>
+        <h2
+          style={{
+            fontFamily: "Cormorant Garamond",
+            fontSize: "clamp(32px, 7vw, 46px)",
+            color: "var(--maroon)",
+            margin: "6px 0 10px",
+          }}
+        >
           Sacred Rituals &amp; Celebrations
         </h2>
 
@@ -379,24 +462,52 @@ export default function Home() {
               className="arch-card"
               style={{ maxWidth: 580 }}
             >
-              <div style={{ fontSize: 48, color: 'var(--gold-dark)', marginBottom: 8 }}>{item.icon}</div>
+              <div
+                style={{
+                  fontSize: 48,
+                  color: "var(--gold-dark)",
+                  marginBottom: 8,
+                }}
+              >
+                {item.icon}
+              </div>
               <p className="kicker-label">{item.eyebrow}</p>
-              <h2 style={{ fontFamily: 'Cormorant Garamond', fontSize: 'clamp(28px, 6vw, 40px)', color: 'var(--maroon)', margin: '8px 0' }}>
+              <h2
+                style={{
+                  fontFamily: "Cormorant Garamond",
+                  fontSize: "clamp(28px, 6vw, 40px)",
+                  color: "var(--maroon)",
+                  margin: "8px 0",
+                }}
+              >
                 {item.title}
               </h2>
               <p className="event-date-text">{item.date}</p>
               <p className="programme-script">{item.venue}</p>
-              <p className="event-follow-text" style={{ marginTop: 6 }}>{item.extra}</p>
+              <p className="event-follow-text" style={{ marginTop: 6 }}>
+                {item.extra}
+              </p>
 
-              <p style={{ fontSize: 14, color: '#4a1924', marginTop: 14, lineHeight: 1.55, fontWeight: 500 }}>
+              <p
+                style={{
+                  fontSize: 14,
+                  color: "#4a1924",
+                  marginTop: 14,
+                  lineHeight: 1.55,
+                  fontWeight: 500,
+                }}
+              >
                 {item.details}
               </p>
 
-              {item.dayName.includes('Oct 21') && (
+              {item.dayName.includes("Oct 21") && (
                 <div className="dress-box">
                   <span className="dress-title">✨ DRESS CODE</span>
-                  <p style={{ margin: '6px 0 0', fontWeight: 600, fontSize: 15 }}>
-                    <strong>Ladies:</strong> Saree (Laal Paar) &nbsp;•&nbsp; <strong>Gents:</strong> Kurta Pyjama
+                  <p
+                    style={{ margin: "6px 0 0", fontWeight: 600, fontSize: 15 }}
+                  >
+                    <strong>Ladies:</strong> Saree (Laal Paar) &nbsp;•&nbsp;{" "}
+                    <strong>Gents:</strong> Kurta Pyjama
                   </p>
                 </div>
               )}
@@ -406,9 +517,9 @@ export default function Home() {
                   href={getGoogleCalendarUrl(
                     item.calendarTitle,
                     item.calendarDetails,
-                    'Railway Officers Club, Howrah',
+                    "Railway Officers Club, Howrah",
                     item.calendarStart,
-                    item.calendarEnd
+                    item.calendarEnd,
                   )}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -425,15 +536,40 @@ export default function Home() {
       {/* Closing Section */}
       <section className="section-wrapper" style={{ paddingBottom: 100 }}>
         <LotusPetalIcon />
-        <p className="kicker-label" style={{ marginTop: 12 }}>माँ का आशीर्वाद · हमारा मिलन</p>
-        <h2 style={{ fontFamily: 'Noto Serif Devanagari', color: 'var(--maroon)', fontSize: 'clamp(26px, 6vw, 42px)', lineHeight: 1.5, margin: '14px 0' }}>
+        <p className="kicker-label" style={{ marginTop: 12 }}>
+          माँ का आशीर्वाद · हमारा मिलन
+        </p>
+        <h2
+          style={{
+            fontFamily: "Noto Serif Devanagari",
+            color: "var(--maroon)",
+            fontSize: "clamp(26px, 6vw, 42px)",
+            lineHeight: 1.5,
+            margin: "14px 0",
+          }}
+        >
           आइए, माँ के चरणों में
           <br />
-          <span style={{ display: 'block', fontSize: 'clamp(22px, 5.2vw, 36px)', fontWeight: 600, color: 'var(--maroon-rich)', marginTop: 8 }}>
+          <span
+            style={{
+              display: "block",
+              fontSize: "clamp(22px, 5.2vw, 36px)",
+              fontWeight: 600,
+              color: "var(--maroon-rich)",
+              marginTop: 8,
+            }}
+          >
             एक साथ आनंद और मिलन का उत्सव मनाएं।
           </span>
         </h2>
-        <p style={{ fontFamily: 'Noto Serif Devanagari', fontSize: 'clamp(18px, 4.5vw, 24px)', color: 'var(--maroon-rich)', margin: '10px 0' }}>
+        <p
+          style={{
+            fontFamily: "Noto Serif Devanagari",
+            fontSize: "clamp(18px, 4.5vw, 24px)",
+            color: "var(--maroon-rich)",
+            margin: "10px 0",
+          }}
+        >
           आपकी गरिमामयी उपस्थिति हमारे इस पावन उत्सव की शोभा बढ़ाएगी!
         </p>
 
@@ -455,10 +591,10 @@ export default function Home() {
             </div>
           )}
 
-          <span>{music ? '♫ Ambient Audio' : '🔇 Muted'}</span>
+          <span>{music ? "♫ Ambient Audio" : "🔇 Muted"}</span>
 
           <button onClick={toggleMusic} aria-label="Toggle background audio">
-            {music ? 'Pause' : 'Play'}
+            {music ? "Pause" : "Play"}
           </button>
         </div>
       )}
