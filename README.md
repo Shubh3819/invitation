@@ -1,5 +1,7 @@
 # Colvin Court Sarbojanin Durga Puja 2026 — digital invitation
 
+Live Link:https://invitation-seven-lilac.vercel.app/
+
 Mobile-first animated invitation prototype. Intended deployment: GitHub -> Vercel.
 
 ## Next
